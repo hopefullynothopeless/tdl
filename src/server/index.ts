@@ -2,8 +2,9 @@ import Koa from "koa";
 import Knex from "knex";
 import Router from "@koa/router";
 import { initNext, initDb } from "./modules";
+import api_router from "./api";
 
-const port = +process.env.PORT || 3000;
+const port = +process.env.PORT || 4000;
 
 export interface AppContext {
   db: Knex;
@@ -16,6 +17,8 @@ async function run() {
   await initDb(server);
 
   router.get("*", await initNext());
+
+  router.use(api_router.routes());
 
   server.use(router.routes());
   server.use(router.allowedMethods());
